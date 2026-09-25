@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vishesh Jain | Software Developer & Cloud Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0b0e;
+      --card-bg: rgba(14, 16, 22, 0.36);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --accent: #f27c26;
+      --accent-hover: #ff8b38;
+      --accent-glow: rgba(242, 124, 38, 0.28);
+      --text-main: #ffffff;
+      --text-muted: #c1c7d4;
+      --text-dim: #8b92a2;
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: auto;
+      /* Zero input latency for wheel and touch; eliminates 300ms double lag */
+      background-color: #df7b28;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+    }
+
+    /* Fixed Full-Page Canvas Video Background */
+    #viewport {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #scroll-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: translateZ(0);
+      will-change: contents;
+    }
+
+    /* Transparent Gradient Tint Over Entire Page for High-Visibility Background Video & Contrast */
+    .global-bg-tint {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 65% 45%, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.22) 90%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.04) 40%, rgba(0, 0, 0, 0.28) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Main Page Content Layer */
+    #page-content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 24px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(10, 11, 14, 0.45) 0%, transparent 100%);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.25s ease;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .btn-pill {
+      background: #ffffff;
+      color: #000000;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-pill .arrow-circle {
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-pill:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .btn-pill:hover .arrow-circle {
+      transform: rotate(45deg);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 130px 6% 40px;
+    }
+
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .hero-title-group {
+      max-width: 600px;
+    }
+
+    .hero-greeting {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 7vw, 5.8rem);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -1.5px;
+      color: #ffffff;
+      text-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-headline .highlight {
+      display: block;
+      color: #ffffff;
+    }
+
+    .hero-quote-group {
+      max-width: 400px;
+      text-align: left;
+      padding-top: 24px;
+    }
+
+    .hero-quote {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #ffffff;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+    }
+
+    /* 4-Item Numbered Bar at bottom of Hero */
+    .hero-pillars {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .pillar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pillar-num {
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .pillar-name {
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .pillar-sub {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.8rem;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Transparent Glass Content Sections */
+    .content-container {
+      padding: 60px 6% 100px;
+    }
+
+    /* Tech Stack Ticker Row */
+    .tech-ticker-section {
+      padding: 30px 40px 40px;
+      margin-bottom: 70px;
+      background: rgba(14, 16, 20, 0.28);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .ticker-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .ticker-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 32px 48px;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      transition: color 0.3s ease;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .ticker-item:hover {
+      color: #ffffff;
+    }
+
+    .ticker-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* Profile Lead Section */
+    .about-lead-section {
+      padding: 60px 40px;
+      margin-bottom: 80px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+      background: rgba(14, 16, 22, 0.32);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: 32px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .section-kicker {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      color: #ffffff;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    .about-lead-text {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 28px;
+    }
+
+    .about-action-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .about-subnote {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* 3-Column Showcase Cards */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      padding-bottom: 90px;
+    }
+
+    .showcase-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 38px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 480px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+    }
+
+    .showcase-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(242, 124, 38, 0.45);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(242, 124, 38, 0.15);
+    }
+
+    .card-top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      width: fit-content;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #ffffff;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .card-features {
+      list-style: none;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-features li {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.82);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.45;
+    }
+
+    .card-features li::before {
+      content: '→';
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .card-footer {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tech-pill {
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.07);
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+
+    /* Academics & Certifications Section */
+    .academics-section {
+      padding: 90px 0;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 36px;
+      margin-top: 40px;
+    }
+
+    .info-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+    }
+
+    .info-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .timeline-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-left: 20px;
+      border-left: 2px solid var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .timeline-title {
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .timeline-meta {
+      font-size: 0.88rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .timeline-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Interactive Certificate Cards */
+    .cert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .cert-item:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: var(--accent);
+      transform: translateX(6px);
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .cert-logo-box {
+      width: 54px;
+      height: 54px;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .cert-item:hover .cert-logo-box {
+      transform: scale(1.08);
+    }
+
+    .cert-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .cert-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex-grow: 1;
+    }
+
+    .cert-title {
+      font-size: 0.96rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.35;
+    }
+
+    .cert-issuer {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .cert-view-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(242, 124, 38, 0.18);
+      border: 1px solid rgba(242, 124, 38, 0.3);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+      width: fit-content;
+    }
+
+    .cert-action-icon {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      padding-left: 8px;
+    }
+
+    .cert-item:hover .cert-action-icon {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    /* Skills Grid */
+    .skills-section {
+      padding: 90px 0;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .skills-matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 36px;
+    }
+
+    .skill-category {
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    }
+
+    .skill-category-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      font-size: 0.82rem;
+      padding: 7px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+    }
+
+    /* Contact & Footer Section */
+    .contact-footer {
+      padding: 100px 40px 50px;
+      border-top: 1px solid var(--card-border);
+      text-align: center;
+      background: rgba(10, 11, 14, 0.32);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 40px 40px 0 0;
+      margin-top: 80px;
+    }
+
+    .footer-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4.4rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: #ffffff;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .footer-sub {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .contact-channels {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .contact-chip {
+      padding: 14px 28px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 100px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .contact-chip:hover {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px var(--accent-glow);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* Interactive Certificate Viewer Modal */
+    .cert-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 24px;
+    }
+
+    .cert-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cert-modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .cert-modal-dialog {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 980px;
+      height: 88vh;
+      background: #14161c;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 30px var(--accent-glow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.96);
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .cert-modal.active .cert-modal-dialog {
+      transform: scale(1);
+    }
+
+    .cert-modal-header {
+      padding: 20px 28px;
+      background: #191c24;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .cert-modal-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cert-modal-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cert-modal-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .cert-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-btn {
+      padding: 8px 18px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+
+    .modal-btn:hover {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+    }
+
+    .modal-btn.highlight {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .modal-btn.highlight:hover {
+      background: var(--accent-hover);
+    }
+
+    .modal-close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: rotate(90deg);
+    }
+
+    .cert-modal-body {
+      flex-grow: 1;
+      width: 100%;
+      height: 100%;
+      background: #0d0f14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      padding: 20px;
+    }
+
+    .cert-modal-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: block;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-content {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .showcase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .split-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-lead-section {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-pillars {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero-pillars {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-headline {
+        font-size: 2.8rem;
+      }
+
+      .content-container {
+        padding: 40px 5% 60px;
+      }
+
+      .cert-modal {
+        padding: 12px;
+      }
+
+      .cert-modal-dialog {
+        height: 92vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Full-Page Background Video Canvas Animation -->
+  <div id="viewport">
+    <canvas id="scroll-canvas"></canvas>
+  </div>
+  <div class="global-bg-tint"></div>
+
+  <!-- Entire Transparent Website Content -->
+  <div id="page-content">
+
+    <!-- Top Navigation -->
+    <nav class="navbar">
+      <a href="#" class="nav-logo">
+        Vishesh<span>.</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#academics">Academics</a></li>
+        <li><a href="#skills">Skills</a></li>
+      </ul>
+      <a href="mailto:Visheshj94@gmail.com" class="btn-pill">
+        Get in touch
+        <span class="arrow-circle">↗</span>
+      </a>
+    </nav>
+
+    <!-- Hero Section (Transparent Over Video) -->
+    <header class="hero-section">
+      <div class="hero-content">
+        <div class="hero-title-group">
+          <p class="hero-greeting">Hey, I'm a</p>
+          <h1 class="hero-headline">
+            Software
+            <span class="highlight">Developer</span>
+          </h1>
+        </div>
+
+        <div class="hero-quote-group">
+          <h2 class="hero-quote">Great engineering should feel seamless.</h2>
+          <p class="hero-desc">
+            Computer Science undergraduate specializing in full-stack web architectures, enterprise cloud systems (SAP
+            BTP), and scalable backend APIs.
+          </p>
+        </div>
+      </div>
+
+      <!-- 4 Numbered Topic Pillars -->
+      <div class="hero-pillars">
+        <div class="pillar-item">
+          <span class="pillar-num">#01</span>
+          <span class="pillar-name">Full-Stack Web</span>
+          <span class="pillar-sub">React.js · Node.js · Express</span>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-num">#02</span>
+          <span class="pillar-name">Cloud & Enterprise</span>
+          <span class="pillar-sub">SAP BTP · ABAP Cloud · Fiori</span>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-num">#03</span>
+          <span class="pillar-name">Backend & APIs</span>
+          <span class="pillar-sub">REST APIs · JWT · MySQL</span>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-num">#04</span>
+          <span class="pillar-name">AI & Systems</span>
+          <span class="pillar-sub">Gemini API · Docker · Networks</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Transparent Content Container for All Sections -->
+    <main class="content-container" id="about">
+
+      <!-- Core Technologies Ticker -->
+      <section class="tech-ticker-section">
+        <p class="ticker-label">Core Technologies & Platforms Mastered</p>
+        <div class="ticker-grid">
+          <div class="ticker-item"><span class="ticker-dot"></span> React.js</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> Node.js</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> SAP BTP</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> Express.js</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> MySQL</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> Docker</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> Google Gemini AI</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> Git / GitHub</div>
+        </div>
+      </section>
+
+      <!-- Profile Summary Section -->
+      <section class="about-lead-section">
+        <div>
+          <p class="section-kicker">Professional Summary</p>
+          <h2 class="section-title">Engineering Systems That Make Life Simpler</h2>
+        </div>
+        <div>
+          <p class="about-lead-text">
+            Computer Science undergraduate with hands-on experience across enterprise cloud systems, full-stack web
+            development, and backend infrastructure. SAP Certified Associate with practical exposure to SAP BTP,
+            Fiori/UI5, and Clean Core architecture.
+          </p>
+          <div class="about-action-group">
+            <a href="mailto:Visheshj94@gmail.com" class="btn-pill">
+              Let's Connect
+              <span class="arrow-circle">↗</span>
+            </a>
+            <span class="about-subnote">Based in Vadodara, Gujarat · Open to Software Trainee & Engineering Roles</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 Project Cards -->
+      <section id="projects">
+        <p class="section-kicker">Featured Projects</p>
+        <h2 class="section-title" style="margin-bottom: 40px;">Selected Work & Solutions</h2>
+
+        <div class="showcase-grid">
+
+          <!-- Project 1 -->
+          <article class="showcase-card">
+            <div class="card-top">
+              <span class="card-badge">Full-Stack Platform · 2025</span>
+              <h3 class="card-title">ProKonnect</h3>
+              <p class="card-desc">Influencer-Business Marketplace Platform facilitating verified brand partnerships and
+                automated campaign management.</p>
+              <ul class="card-features">
+                <li>Engineered backend REST API infrastructure with JWT authentication and relational MySQL database.
+                </li>
+                <li>Coordinated 5-member team using Git version control and Agile task tracking.</li>
+                <li>Diagnosed and resolved cross-service frontend-backend integration issues.</li>
+                <li>Documented comprehensive system architecture and API endpoints for audit readiness.</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <span class="tech-pill">React.js</span>
+              <span class="tech-pill">Node.js</span>
+              <span class="tech-pill">Express.js</span>
+              <span class="tech-pill">MySQL</span>
+              <span class="tech-pill">REST APIs</span>
+              <span class="tech-pill">JWT</span>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="showcase-card">
+            <div class="card-top">
+              <span class="card-badge">Enterprise Cloud · 2026</span>
+              <h3 class="card-title">Student Analytics Dashboard</h3>
+              <p class="card-desc">SAP BTP Cloud Application utilizing Cloud Application Programming (CAP) and Clean
+                Core architecture.</p>
+              <ul class="card-features">
+                <li>Administered enterprise application environment on SAP BTP managing CAP service bindings.</li>
+                <li>Diagnosed and resolved CDS duplicate-artifact conflicts between CAP root and Fiori generator files.
+                </li>
+                <li>Modeled backend data entities via CDS views, exposing robust OData/REST services.</li>
+                <li>Maintained strict Clean Core compliance and audit-ready architecture documentation.</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <span class="tech-pill">SAP BTP</span>
+              <span class="tech-pill">SAP Fiori/UI5</span>
+              <span class="tech-pill">ABAP Cloud</span>
+              <span class="tech-pill">CDS Views</span>
+              <span class="tech-pill">Clean Core</span>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="showcase-card">
+            <div class="card-top">
+              <span class="card-badge">National Winner · 2026</span>
+              <h3 class="card-title">AthleteIQ & AI Health</h3>
+              <p class="card-desc">Award-winning AI & Health initiatives combining hardware telemetry and Google Gemini
+                LLMs.</p>
+              <ul class="card-features">
+                <li><strong>Winner, Samsung Solve for Tomorrow 2026</strong>: AthleteIQ wearable health analytics with
+                  Samsung Galaxy Watch & Health SDK.</li>
+                <li><strong>Winner, Web Warrior National Competition</strong>: AI Mental Health Support Tool built using
+                  Gemini API at Google Gen AI Hackathon.</li>
+                <li>Real-time biometric data processing and intelligent empathetic conversational flows.</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <span class="tech-pill">Google Gemini API</span>
+              <span class="tech-pill">Health SDK</span>
+              <span class="tech-pill">Galaxy Watch</span>
+              <span class="tech-pill">Node.js</span>
+              <span class="tech-pill">AI Analytics</span>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Academics, Certifications & Education Section -->
+      <section class="academics-section" id="academics">
+        <p class="section-kicker">Academic Background</p>
+        <h2 class="section-title">Education & Credentials</h2>
+
+        <div class="split-grid">
+          <!-- Education Card -->
+          <div class="info-card">
+            <h3>🎓 University Education</h3>
+            <div class="timeline-item">
+              <h4 class="timeline-title">Bachelor of Technology (B.Tech) in Computer Science Engineering</h4>
+              <span class="timeline-meta">Parul University, Vadodara, Gujarat · Aug 2023 – May 2027</span>
+              <p class="timeline-desc">
+                Current CGPA: <strong>7.8 / 10</strong>. Coursework in Computer Networks, Internet Protocols,
+                Object-Oriented Software Engineering, Database Management Systems, and Cloud Architectures.
+              </p>
+            </div>
+            <div class="timeline-item">
+              <h4 class="timeline-title">Professional Development</h4>
+              <span class="timeline-meta">Agile/Scrum Team Collaboration · Code Reviews</span>
+              <p class="timeline-desc">
+                Actively participating in peer code reviews, Git branching strategies, and rapid prototyping hackathons.
+              </p>
+            </div>
+          </div>
+
+          <!-- Clickable Certifications Card with Modal Previews -->
+          <div class="info-card">
+            <h3>📜 Verified Certifications</h3>
+            <p style="font-size:0.85rem; color:var(--text-dim); margin-top:-14px;">Click any certificate below to view
+              official credentials & verification details.</p>
+
+            <div class="cert-list">
+
+              <!-- SAP Certificate -->
+              <div class="cert-item" onclick="openCertModal('sap')" role="button" tabindex="0">
+                <div class="cert-logo-box">
+                  <img src="logo-sap.png" alt="SAP Logo" class="cert-logo-img" />
+                </div>
+                <div class="cert-info">
+                  <h4 class="cert-title">SAP Certified Associate – Back-End Developer (ABAP Cloud)</h4>
+                  <p class="cert-issuer">SAP · Issued Jul 16, 2025 · Valid to Jul 17, 2026</p>
+                  <span class="cert-view-badge">View Certificate & Credly ↗</span>
+                </div>
+                <div class="cert-action-icon">→</div>
+              </div>
+
+              <!-- NPTEL Certificate -->
+              <div class="cert-item" onclick="openCertModal('nptel')" role="button" tabindex="0">
+                <div class="cert-logo-box">
+                  <img src="logo-nptel.png" alt="NPTEL Logo" class="cert-logo-img" />
+                </div>
+                <div class="cert-info">
+                  <h4 class="cert-title">Computer Networks and Internet Protocol</h4>
+                  <p class="cert-issuer">NPTEL / IIT Kharagpur · 12 Week Course · Score: 54%</p>
+                  <span class="cert-view-badge">View Certificate & Roll No ↗</span>
+                </div>
+                <div class="cert-action-icon">→</div>
+              </div>
+
+              <!-- TATA / Forage Certificate -->
+              <div class="cert-item" onclick="openCertModal('tata')" role="button" tabindex="0">
+                <div class="cert-logo-box">
+                  <img src="logo-tata.jpg" alt="TATA Logo" class="cert-logo-img" />
+                </div>
+                <div class="cert-info">
+                  <h4 class="cert-title">GenAI Powered Data Analytics Job Simulation</h4>
+                  <p class="cert-issuer">Tata Group / Forage · Completed May 8th, 2026</p>
+                  <span class="cert-view-badge">View Certificate & Tasks ↗</span>
+                </div>
+                <div class="cert-action-icon">→</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technical Skills Section -->
+      <section class="skills-section" id="skills">
+        <p class="section-kicker">Technical Arsenal</p>
+        <h2 class="section-title">Skills & Technologies</h2>
+
+        <div class="skills-matrix">
+          <div class="skill-category">
+            <h4 class="skill-category-title">💻 Programming & Web</h4>
+            <div class="skill-pills">
+              <span class="skill-tag">JavaScript (ES6+)</span>
+              <span class="skill-tag">HTML5</span>
+              <span class="skill-tag">CSS3</span>
+              <span class="skill-tag">React.js</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h4 class="skill-category-title">⚙️ Backend & Databases</h4>
+            <div class="skill-pills">
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">Express.js</span>
+              <span class="skill-tag">RESTful APIs</span>
+              <span class="skill-tag">MVC Architecture</span>
+              <span class="skill-tag">JWT Auth</span>
+              <span class="skill-tag">MySQL / SQL</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h4 class="skill-category-title">☁️ SAP & Enterprise Cloud</h4>
+            <div class="skill-pills">
+              <span class="skill-tag">SAP BTP</span>
+              <span class="skill-tag">SAP Fiori/UI5</span>
+              <span class="skill-tag">ABAP Cloud</span>
+              <span class="skill-tag">CDS Views</span>
+              <span class="skill-tag">OData Services</span>
+              <span class="skill-tag">Clean Core</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h4 class="skill-category-title">🛠️ DevOps & Infrastructure</h4>
+            <div class="skill-pills">
+              <span class="skill-tag">Docker</span>
+              <span class="skill-tag">Git / GitHub</span>
+              <span class="skill-tag">Postman</span>
+              <span class="skill-tag">Linux / CLI</span>
+              <span class="skill-tag">Agile / Scrum</span>
+              <span class="skill-tag">Networks & Protocols</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer / Get In Touch -->
+      <footer class="contact-footer">
+        <p class="section-kicker">Get In Touch</p>
+        <h2 class="footer-headline">Let's Build Together.</h2>
+        <p class="footer-sub">
+          Final-year CSE student actively seeking Software Trainee and Internship roles. If you're hiring or just want
+          to talk tech, my inbox is open.
+        </p>
+
+        <div class="contact-channels">
+          <a href="mailto:Visheshj94@gmail.com" class="contact-chip">
+            ✉ Visheshj94@gmail.com
+          </a>
+          <a href="tel:+917648990021" class="contact-chip">
+            📞 +91-7648990021
+          </a>
+          <a href="https://www.linkedin.com/in/vishesh-jain-8a14062a5" target="_blank" rel="noopener"
+            class="contact-chip">
+            💼 LinkedIn
+          </a>
+          <a href="https://github.com/visheshjain" target="_blank" rel="noopener" class="contact-chip">
+            🐙 GitHub
+          </a>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© 2026 Vishesh Jain · Vadodara, Gujarat, India</span>
+          <span>Full-Page Smooth Scroll Video Architecture</span>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Interactive Certificate Lightbox Modal -->
+  <div id="cert-modal" class="cert-modal" aria-hidden="true" role="dialog">
+    <div class="cert-modal-backdrop" onclick="closeCertModal()"></div>
+    <div class="cert-modal-dialog">
+      <div class="cert-modal-header">
+        <div class="cert-modal-title-group">
+          <span class="cert-modal-badge" id="modal-badge">Official Credential</span>
+          <h3 class="cert-modal-title" id="modal-title">Certificate</h3>
+        </div>
+        <div class="cert-modal-actions">
+          <a id="modal-credly-btn" href="#" target="_blank" rel="noopener" class="modal-btn highlight"
+            style="display:none;">
+            Verify on Credly ↗
+          </a>
+          <a id="modal-full-btn" href="#" target="_blank" rel="noopener" class="modal-btn">
+            View Full Size ↗
+          </a>
+          <button class="modal-close-btn" onclick="closeCertModal()" aria-label="Close modal">✕</button>
+        </div>
+      </div>
+      <div class="cert-modal-body">
+        <img id="modal-img" class="cert-modal-img" src="" alt="Certificate Display" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const TOTAL_FRAMES = 300;
+      const FRAME_PREFIX = 'ezgif-frame-';
+      const FRAME_EXT = '.jpg';
+
+      const canvas = document.getElementById('scroll-canvas');
+      const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+
+      const frames = new Array(TOTAL_FRAMES + 1);
+      const isLoaded = new Uint8Array(TOTAL_FRAMES + 1);
+
+      let targetFrame = 1;
+      let currentFrame = 1;
+      let velocity = 0;
+      let lastRenderedFrame = -1;
+      let isRendering = false;
+      let lastTimestamp = 0;
+
+      // Cinematic Video Playback Physics
+      // Converts discrete notched mouse-wheel steps into continuous fluid video playback
+      const SPRING_TENSION = 0.088; // Responsive forward momentum
+      const DAMPING_FACTOR = 0.72;  // Silky critically damped ease (no bounce, buttery deceleration)
+      const MAX_FRAME_SPEED = 3.8;  // Maximum frame advance per tick to prevent skipping
+
+      function getFrameUrl(index) {
+        return `${FRAME_PREFIX}${String(index).padStart(3, '0')}${FRAME_EXT}`;
+      }
+
+      function handleResize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(window.innerWidth * dpr);
+        canvas.height = Math.round(window.innerHeight * dpr);
+
+        if (lastRenderedFrame > 0) {
+          drawFrame(lastRenderedFrame);
+        }
+      }
+
+      window.addEventListener('resize', handleResize, { passive: true });
+      handleResize();
+
+      function drawFrame(frameIndex) {
+        let img = isLoaded[frameIndex] ? frames[frameIndex] : null;
+
+        if (!img) {
+          img = findClosestLoadedFrame(frameIndex);
+        }
+
+        if (!img || !img.complete || img.naturalWidth === 0) return;
+
+        const cw = canvas.width;
+        const ch = canvas.height;
+        const iw = img.naturalWidth;
+        const ih = img.naturalHeight;
+
+        const canvasAspect = cw / ch;
+        const imgAspect = iw / ih;
+
+        let drawW, drawH, drawX, drawY;
+        if (canvasAspect > imgAspect) {
+          drawW = cw;
+          drawH = cw / imgAspect;
+          drawX = 0;
+          drawY = (ch - drawH) / 2;
+        } else {
+          drawH = ch;
+          drawW = ch * imgAspect;
+          drawX = (cw - drawW) / 2;
+          drawY = 0;
+        }
+
+        ctx.drawImage(img, drawX, drawY, drawW, drawH);
+        lastRenderedFrame = frameIndex;
+      }
+
+      function findClosestLoadedFrame(target) {
+        for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+          const prev = target - offset;
+          if (prev >= 1 && isLoaded[prev]) return frames[prev];
+          const next = target + offset;
+          if (next <= TOTAL_FRAMES && isLoaded[next]) return frames[next];
+        }
+        return frames[1] || null;
+      }
+
+      function loadFrame(index) {
+        if (frames[index]) return frames[index];
+
+        const img = new Image();
+        img.src = getFrameUrl(index);
+        frames[index] = img;
+
+        img.onload = () => {
+          isLoaded[index] = 1;
+          if (lastRenderedFrame === -1 && index === 1) {
+            drawFrame(1);
+          }
+        };
+
+        return img;
+      }
+
+      // Map scroll across document height [0, maxScroll] -> frames [1, 300]
+      function onScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const progress = Math.max(0, Math.min(1, scrollTop / maxScroll));
+
+        targetFrame = 1 + progress * (TOTAL_FRAMES - 1);
+
+        if (!isRendering) {
+          isRendering = true;
+          lastTimestamp = 0;
+          requestAnimationFrame(animationLoop);
+        }
+
+        prefetchAround(Math.round(currentFrame));
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      function prefetchAround(center) {
+        const radius = 50;
+        const start = Math.max(1, center - radius);
+        const end = Math.min(TOTAL_FRAMES, center + radius);
+        for (let i = start; i <= end; i++) {
+          if (!frames[i]) loadFrame(i);
+        }
+      }
+
+      // Preload all frames rapidly in parallel batches
+      function preloadSequence() {
+        loadFrame(1);
+        for (let i = 2; i <= 60; i++) {
+          loadFrame(i);
+        }
+
+        let next = 61;
+        function loadNextBatch() {
+          const limit = Math.min(TOTAL_FRAMES, next + 35);
+          for (let i = next; i <= limit; i++) {
+            if (!frames[i]) loadFrame(i);
+          }
+          next = limit + 1;
+          if (next <= TOTAL_FRAMES) {
+            setTimeout(loadNextBatch, 6);
+          }
+        }
+        setTimeout(loadNextBatch, 10);
+      }
+
+      // Continuous Cinematic Video Playback Engine
+      // Integrates velocity & momentum so every wheel notch plays video frames sequentially
+      function animationLoop(timestamp) {
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        // Frame-rate independent delta time (normalized to 60fps)
+        const dt = Math.min(2.2, Math.max(0.4, (timestamp - lastTimestamp) / 16.67));
+        lastTimestamp = timestamp;
+
+        const diff = targetFrame - currentFrame;
+        const absDiff = Math.abs(diff);
+
+        // Apply smooth spring acceleration towards target
+        velocity += diff * SPRING_TENSION * dt;
+
+        // Apply viscous friction damping
+        velocity *= Math.pow(DAMPING_FACTOR, dt);
+
+        // Cap speed to maintain unbroken video continuity without sudden skipping
+        if (Math.abs(velocity) > MAX_FRAME_SPEED) {
+          velocity = Math.sign(velocity) * MAX_FRAME_SPEED;
+        }
+
+        // Advance the playhead
+        currentFrame += velocity * dt;
+
+        // Boundary safety
+        if (currentFrame < 1) {
+          currentFrame = 1;
+          velocity = 0;
+        } else if (currentFrame > TOTAL_FRAMES) {
+          currentFrame = TOTAL_FRAMES;
+          velocity = 0;
+        }
+
+        // Render changed frames
+        const rounded = Math.min(TOTAL_FRAMES, Math.max(1, Math.round(currentFrame)));
+        if (rounded !== lastRenderedFrame) {
+          drawFrame(rounded);
+        }
+
+        prefetchAround(rounded);
+
+        // Continue running while playhead is still gliding
+        if (absDiff > 0.015 || Math.abs(velocity) > 0.004) {
+          requestAnimationFrame(animationLoop);
+        } else {
+          // Clean snap & sleep-on-idle when motion completes (0% CPU/GPU)
+          currentFrame = targetFrame;
+          const finalRound = Math.min(TOTAL_FRAMES, Math.max(1, Math.round(currentFrame)));
+          if (finalRound !== lastRenderedFrame) {
+            drawFrame(finalRound);
+          }
+          velocity = 0;
+          lastTimestamp = 0;
+          isRendering = false;
+        }
+      }
+
+      // Smooth animated scrolling specifically for navigation anchor links (#about, #projects, etc.)
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (href && href !== '#' && !href.startsWith('#cert-')) {
+            const targetEl = document.querySelector(href);
+            if (targetEl) {
+              e.preventDefault();
+              targetEl.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        });
+      });
+
+      preloadSequence();
+      onScroll();
+      isRendering = true;
+      requestAnimationFrame(animationLoop);
+    })();
+
+    // Certificate Lightbox Modal Controller
+    const certData = {
+      sap: {
+        title: 'SAP Certified Associate – Back-End Developer (ABAP Cloud)',
+        badge: 'Official SAP Credential',
+        img: 'cert-sap.png',
+        credly: 'https://www.credly.com/badges/0ecf66a3-36d2-4e72-a239-f523e91a5704'
+      },
+      nptel: {
+        title: 'Computer Networks and Internet Protocol (NPTEL / IIT Kharagpur)',
+        badge: 'IIT Kharagpur Certified · Roll No: NPTEL25CS15S1159400121',
+        img: 'cert-nptel.png',
+        credly: null
+      },
+      tata: {
+        title: 'GenAI Powered Data Analytics Job Simulation (Tata Group / Forage)',
+        badge: 'Tata Group & Forage Certified · Code: B3RcHm9Ewv2BhADGd',
+        img: 'cert-tata.png',
+        credly: null
+      }
+    };
+
+    function openCertModal(key) {
+      const data = certData[key];
+      if (!data) return;
+
+      const modal = document.getElementById('cert-modal');
+      const title = document.getElementById('modal-title');
+      const badge = document.getElementById('modal-badge');
+      const modalImg = document.getElementById('modal-img');
+      const fullBtn = document.getElementById('modal-full-btn');
+      const credlyBtn = document.getElementById('modal-credly-btn');
+
+      title.textContent = data.title;
+      badge.textContent = data.badge;
+      modalImg.src = data.img;
+      if (fullBtn) fullBtn.href = data.img;
+
+      if (data.credly) {
+        credlyBtn.href = data.credly;
+        credlyBtn.style.display = 'inline-flex';
+      } else {
+        credlyBtn.style.display = 'none';
+      }
+
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCertModal() {
+      const modal = document.getElementById('cert-modal');
+      const modalImg = document.getElementById('modal-img');
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      modalImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeCertModal();
+      }
+    });
+  </script>
+</body>
+
+</html>
