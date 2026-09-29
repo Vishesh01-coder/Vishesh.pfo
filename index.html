@@ -1246,7 +1246,7 @@
               <!-- SAP Certificate -->
               <div class="cert-item" onclick="openCertModal('sap')" role="button" tabindex="0">
                 <div class="cert-logo-box">
-                  <img src="logo-sap.png" alt="SAP Logo" class="cert-logo-img" />
+                  <img src="logo-sap.png" alt="SAP Logo" class="cert-logo-img" onerror="this.onerror=null; this.src='./logo-sap.png';" />
                 </div>
                 <div class="cert-info">
                   <h4 class="cert-title">SAP Certified Associate – Back-End Developer (ABAP Cloud)</h4>
@@ -1259,7 +1259,7 @@
               <!-- NPTEL Certificate -->
               <div class="cert-item" onclick="openCertModal('nptel')" role="button" tabindex="0">
                 <div class="cert-logo-box">
-                  <img src="logo-nptel.png" alt="NPTEL Logo" class="cert-logo-img" />
+                  <img src="logo-nptel.png" alt="NPTEL Logo" class="cert-logo-img" onerror="this.onerror=null; this.src='./logo-nptel.png';" />
                 </div>
                 <div class="cert-info">
                   <h4 class="cert-title">Computer Networks and Internet Protocol</h4>
@@ -1272,7 +1272,7 @@
               <!-- TATA / Forage Certificate -->
               <div class="cert-item" onclick="openCertModal('tata')" role="button" tabindex="0">
                 <div class="cert-logo-box">
-                  <img src="logo-tata.jpg" alt="TATA Logo" class="cert-logo-img" />
+                  <img src="logo-tata.png" alt="TATA Logo" class="cert-logo-img" onerror="this.onerror=null; this.src='logo-tata.jpg';" />
                 </div>
                 <div class="cert-info">
                   <h4 class="cert-title">GenAI Powered Data Analytics Job Simulation</h4>
@@ -1296,6 +1296,7 @@
           <div class="skill-category">
             <h4 class="skill-category-title">💻 Programming & Web</h4>
             <div class="skill-pills">
+              <span class="skill-tag">Python</span>
               <span class="skill-tag">JavaScript (ES6+)</span>
               <span class="skill-tag">HTML5</span>
               <span class="skill-tag">CSS3</span>
@@ -1388,6 +1389,10 @@
           <a id="modal-credly-btn" href="#" target="_blank" rel="noopener" class="modal-btn highlight"
             style="display:none;">
             Verify on Credly ↗
+          </a>
+          <a id="modal-pdf-btn" href="#" target="_blank" rel="noopener" class="modal-btn"
+            style="display:none;">
+            Official PDF 📄
           </a>
           <a id="modal-full-btn" href="#" target="_blank" rel="noopener" class="modal-btn">
             View Full Size ↗
@@ -1637,18 +1642,21 @@
         title: 'SAP Certified Associate – Back-End Developer (ABAP Cloud)',
         badge: 'Official SAP Credential',
         img: 'cert-sap.png',
+        pdf: 'cert-sap.pdf',
         credly: 'https://www.credly.com/badges/0ecf66a3-36d2-4e72-a239-f523e91a5704'
       },
       nptel: {
         title: 'Computer Networks and Internet Protocol (NPTEL / IIT Kharagpur)',
         badge: 'IIT Kharagpur Certified · Roll No: NPTEL25CS15S1159400121',
         img: 'cert-nptel.png',
+        pdf: 'cert-nptel.pdf',
         credly: null
       },
       tata: {
         title: 'GenAI Powered Data Analytics Job Simulation (Tata Group / Forage)',
         badge: 'Tata Group & Forage Certified · Code: B3RcHm9Ewv2BhADGd',
         img: 'cert-tata.png',
+        pdf: 'cert-tata.pdf',
         credly: null
       }
     };
@@ -1663,17 +1671,25 @@
       const modalImg = document.getElementById('modal-img');
       const fullBtn = document.getElementById('modal-full-btn');
       const credlyBtn = document.getElementById('modal-credly-btn');
+      const pdfBtn = document.getElementById('modal-pdf-btn');
 
       title.textContent = data.title;
       badge.textContent = data.badge;
       modalImg.src = data.img;
       if (fullBtn) fullBtn.href = data.img;
 
-      if (data.credly) {
+      if (data.credly && credlyBtn) {
         credlyBtn.href = data.credly;
         credlyBtn.style.display = 'inline-flex';
-      } else {
+      } else if (credlyBtn) {
         credlyBtn.style.display = 'none';
+      }
+
+      if (data.pdf && pdfBtn) {
+        pdfBtn.href = data.pdf;
+        pdfBtn.style.display = 'inline-flex';
+      } else if (pdfBtn) {
+        pdfBtn.style.display = 'none';
       }
 
       modal.classList.add('active');
@@ -1694,6 +1710,15 @@
       if (e.key === 'Escape') {
         closeCertModal();
       }
+    });
+
+    document.querySelectorAll('.cert-item').forEach(item => {
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
     });
   </script>
 </body>
